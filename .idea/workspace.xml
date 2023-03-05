@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d28b3c40-8c0c-484b-b710-5b349b63209b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Bank/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Bank/UsersRegLogIn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Bank/BankingSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bank/BankingSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Bank/BankingSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bank/Bank.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Bank/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bank/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Bank/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bank/Users.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestingDbConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestingDbConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Bank/Users.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,13 +41,26 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-j-8.0.31.jar",
+    "last_opened_file_path": "C:/Users/gimus/IdeaProjects/JAVA_final_project",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Bank.Main" />
+      <module name="Bank_task_0" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Bank.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TestingDbConnection" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TestingDbConnection" />
       <module name="Bank_task_0" />
@@ -57,6 +70,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.TestingDbConnection" />
       </list>
     </recent_temporary>
