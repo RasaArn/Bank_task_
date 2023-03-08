@@ -4,65 +4,55 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
+import java.sql.DriverManager;
+import java.util.Scanner;
+
+
 
 class Bank {
+    private static final String URL = "jdbc:mysql://localhost:3306/banktask";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "1234";
     private Connection connection;
 
     public Bank(Connection connection) {
         this.connection = connection;
     }
 
-    public void addUser(User user) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO bankUsers (fullName, password, phoneNumber, email, accountNumber, balance) VALUES (?, ?, ?, ?, ?, ?)");
-        statement.setString(1, user.getFullName());
-        statement.setString(2, user.getPassword());
-        statement.setString(3, user.getPhoneNumber());
-        statement.setString(4, user.getEmail());
-        statement.setString(5, user.getAccountNumber().toString());
-        statement.setDouble(6, user.getBalance());
-        statement.executeUpdate();
-    }
+    public static void findUser() {
+        Scanner scanner = new Scanner(System.in);
 
-    public boolean removeUser(UUID accountNumber) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(
-                "DELETE FROM users WHERE accountNumber = ?");
-        statement.setString(5, accountNumber.toString()); //originaliai buvo 1 vietoj 5
-        int numRowsDeleted = statement.executeUpdate();
-        return numRowsDeleted > 0;
-    }
+        System.out.println("Please enter the personal ID of the user you would like to find:");
+        long personalId = scanner.nextLong();
+        scanner.nextLine();
 
-    public User findUser(UUID accountNumber) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(
-                "SELECT * FROM users WHERE accountNumber = ?");
-        statement.setString(5, accountNumber.toString());//originaliai buvo 1 vietoj 5
-        ResultSet resultSet = statement.executeQuery();
+        try {
+            Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM bankUsers WHERE personalId=?");
+            statement.setLong(1, personalId);
+            ResultSet rs = statement.executeQuery();
 
-        if (resultSet.next()) {
-            String fullName = resultSet.getString("fullName");
-            String password = resultSet.getString("password");
-            String phoneNumber = resultSet.getString("phoneNumber");
-            String email = resultSet.getString("email");
-            UUID accountNumberDb = UUID.fromString(resultSet.getString("accountNumber"));
-            double balance = resultSet.getDouble("balance");
+            if (rs.next()) {
+                String fullName = rs.getString("fullName");
+                String password = rs.getString("password");
+                String phoneNumber = rs.getString("phoneNumber");
+                String email = rs.getString("email");
+                double balance = rs.getDouble("balance");
+                long accountNumber = rs.getLong("accountNumber");
 
-            User user = new User(fullName, password, phoneNumber, email, accountNumberDb, balance);
-            return user;
-        } else {
-            return null;
+                System.out.println("User found:");
+                System.out.println("Full name: " + fullName);
+                System.out.println("Password: " + password);
+                System.out.println("Phone number: " + phoneNumber);
+                System.out.println("Email: " + email);
+                System.out.println("Balance: " + balance);
+                System.out.println("Account number: " + accountNumber);
+            } else {
+                System.out.println("User not found.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    }
-
-    public void replaceUser(User oldUser, User newUser) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(
-                "UPDATE users SET fullName = ?, password = ?, phoneNumber = ?, email = ?, accountNumber = ?, balance = ? WHERE accountNumber = ?");
-        statement.setString(1, newUser.getFullName());
-        statement.setString(2, newUser.getPassword());
-        statement.setString(3, newUser.getPhoneNumber());
-        statement.setString(4, newUser.getEmail());
-        statement.setString(5, newUser.getAccountNumber().toString());
-        statement.setDouble(6, newUser.getBalance());
-        statement.executeUpdate();
     }
 }

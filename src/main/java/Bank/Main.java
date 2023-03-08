@@ -1,45 +1,90 @@
 package Bank;
 
-
-
-import java.sql.Connection;
-        import java.sql.DriverManager;
-        import java.sql.SQLException;
-        import java.util.Scanner;
-        import java.util.UUID;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Main {
-
-    private static final String DB_URL = "jdbc:mysql://localhost/banktask";
-    private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "1234";
-
     public static void main(String[] args) {
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD)) {
-            // Create a bank object
-            Bank bank = new Bank(connection);
+        UserRegAndLogin userRegAndLogin = new UserRegAndLogin();
 
-            // Register a new user
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter your full name:");
-            String fullName = scanner.nextLine();
-            System.out.println("Enter your password:");
-            String password = scanner.nextLine();
-            if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")) {
-                System.out.println("Password must contain at least one uppercase letter, one lowercase letter, one digit, and be at least 8 characters long.");
+        System.out.println("-------------------------------------------------------------------------------------");
+        System.out.println("Welcome to the StarBank! Please press 1 if you are employee and 2 if you are customer");
 
-            }
-            System.out.println("Enter your phone number:");
-            String phoneNumber = scanner.nextLine();
-            System.out.println("Enter your email address:");
-            String email = scanner.nextLine();
-            UUID accountNumber = UUID.randomUUID();
-            double balance = 0.0;
-            User newUser = new User(fullName, password, phoneNumber, email, accountNumber, balance);
-            bank.addUser(newUser);
-            System.out.println("Registration successful. Your account number is " + accountNumber.toString());
-        } catch (SQLException e) {
-            System.out.println("Database connection failed: " + e.getMessage());
+
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+
+        while (true){
+        try {
+            choice = scanner.nextInt();
+
+            if (choice == 1) {
+                Menu.bankEmployeeMenu();
+
+
+                int employeeChoice = 0;
+                do { //try catch block and do while loop to validate user input and not stop program with invalid input
+                    try {
+                        employeeChoice= scanner.nextInt();
+                        if (employeeChoice < 1 || employeeChoice > 4) {
+                            throw new InputMismatchException();
+                        }
+                        switch (employeeChoice) {
+                            case 1 ->
+                                // Replace an existing user with a new one
+                                    System.out.println("Replace user selected.");
+                            case 2 ->
+                                // Remove user
+                                    System.out.println("Remove user selected.");
+                            case 3 ->
+                                // Find user
+                                    System.out.println("Find user selected.");
+                            case 4 ->
+                                // Change personal information for user
+                                    System.out.println("Change user information selected.");
+                            default -> System.out.println("Invalid choice. Please try again.");
+                        }
+                 } catch (InputMismatchException e) {
+                        System.out.println("Invalid choice entered. Please enter a number between 1 and 4.");
+                    }
+                }while (employeeChoice < 1 || employeeChoice > 4);
+                scanner.nextLine();
+
+
+            } else if (choice == 2) {
+                Menu.customerMenu();
+
+
+                int customerChoice=0; // try catch block and do while loop to validate user input and not stop program with invalid input
+                do { //try catch block and do while loop to validate user input and not stop program with invalid input
+                    try {
+                        customerChoice= scanner.nextInt();
+                        if (customerChoice != 1 && customerChoice != 2 && customerChoice != 3 ) {
+                            throw new InputMismatchException();
+                        }
+                        switch (customerChoice) {
+                            case 1 -> userRegAndLogin.loginUser();
+                            case 2 -> UserRegAndLogin.registerUser();
+                            case 3 -> UserRegAndLogin.changeBalance();
+
+                            default -> System.out.println("Invalid choice. Please try again.");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid choice entered.Valid input is 1, 2, or 3");
+                    }
+                }while (customerChoice != 1 && customerChoice != 2);
+                scanner.nextLine();
+
+
+            } else {
+                throw new InputMismatchException();
+            } break; //Exit the while loop if input is valid
+
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid choice entered. Please enter 1 or 2.");
+            scanner.nextLine();
         }
+      }
     }
 }
