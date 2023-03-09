@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d28b3c40-8c0c-484b-b710-5b349b63209b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Bank_task.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Bank_task.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Bank/Bank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bank/Bank.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Bank/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bank/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Bank/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bank/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Bank/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Bank/UserRegAndLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bank/UserRegAndLogin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DatabseConnection.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
