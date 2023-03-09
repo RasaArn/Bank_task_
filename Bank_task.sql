@@ -5,7 +5,7 @@ CREATE TABLE bankUsers (
     personalId BIGINT(20) NOT NULL,
     email VARCHAR(255) NOT NULL,
     balance DOUBLE NOT NULL,
-    accountNumber BIGINT(36) NOT NULL AUTO_INCREMENT, -- used insteda of ID. Each new user gets new unique number when is registered
+    accountNumber BIGINT(36) NOT NULL AUTO_INCREMENT, -- used instead of user ID. Each new user gets a new unique number when is registered
     PRIMARY KEY (accountNumber),
     UNIQUE KEY (accountNumber)
 ) AUTO_INCREMENT=1000000000000;
