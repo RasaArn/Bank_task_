@@ -21,42 +21,30 @@ public class UserRegAndLogin {
         double balance = 0;
 
 
-        //System.out.println("Please enter your full name:");
-        // fullName = scanner.nextLine();
+        //1. User enters name. Validation done- only letters.
         Pattern pattern = Pattern.compile("^[a-zA-Z ]+$");
         do {
-            System.out.println("Please enter your full name:");
+            System.out.println("Please enter name and surname:");
             fullName = scanner.nextLine();
             if (!pattern.matcher(fullName).matches()) {
-                System.out.println("Invalid name. Only letters are allowed.");
+                System.out.println("Invalid input. Only letters are allowed.");
             }
         } while (!pattern.matcher(fullName).matches());
         System.out.println("Name is registered");
 
 
-        do {//validating password
+        do {//2. User enters password. Prompting  user to choose password which meets requirements (see regex)
             System.out.println("Please enter a password that contains at least one uppercase letter, one lowercase letter, one digit, and is at least 8 characters long:");
             password = scanner.nextLine();
 
             if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")) {  // The ^ and $ anchors in regex ensure that the regular expression matches the entire input string.
-                System.out.println("Password does not meet the requirements. Please try again.");
+                System.out.println("Password does not meet the requirements. Please choose another password.");
             }
         } while (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$"));
         System.out.println("Password is accepted.");
 
 
-        do { //validating phone number \\d allows any digit
-            System.out.println("Please enter a phone number that contains exactly 9 digits:");
-            phoneNumber = scanner.nextLine();
-
-            if (!phoneNumber.matches("^\\d{9}$")) {
-                System.out.println("Phone number does not meet the requirements. Please try again.");
-            }
-        } while (!phoneNumber.matches("^\\d{9}$"));
-        System.out.println("Phone number is registered.");
-
-
-        do { //validating phone number - if 9 numeric digits and if it not exists in database
+        do { //validating phone number, checking if it is already in database
             System.out.println("Please enter a phone number that contains exactly 9 digits:");
             phoneNumber = scanner.nextLine();
 
@@ -108,7 +96,7 @@ public class UserRegAndLogin {
 
 
         do {
-            System.out.println("Please enter your email address:");
+            System.out.println("Please enter email address:");
             email = scanner.nextLine();
             if (!email.matches("^\\S+@\\S+\\.\\S+$")) {
                 System.out.println("Email does not meet the requirements. Please try again.");
@@ -131,12 +119,12 @@ public class UserRegAndLogin {
                 }
             }
         } while (email == null);
-        email = scanner.nextLine();
+
         System.out.println("Email is registered.");
 
 
         // add money to the account
-        System.out.println("How much would you like to add to your account ? :");
+        System.out.println("How much would you like to add to bank account ?");
         balance = scanner.nextDouble();
         scanner.nextLine();
 
@@ -157,8 +145,8 @@ public class UserRegAndLogin {
             if (rs.next()) {
                 Long account = rs.getLong("accountNumber");
                 Double bal = rs.getDouble("balance");
-                System.out.println("User was registered successfully." + "Your account number is : " + account);
-                System.out.println("Your current balance is: " + bal);
+                System.out.println("Created bank account number : " + account);
+                System.out.println("Current balance is: " + bal);
             }
 
         } catch (SQLException e) {
@@ -221,14 +209,18 @@ public class UserRegAndLogin {
         long personalId = scanner.nextLong();
         scanner.nextLine();
 
+        System.out.println("Please enter your password:");
+        String password = scanner.nextLine();
+
         System.out.println("Please enter the amount you would like to add or withdraw (use a negative value to withdraw):");
         double amount = scanner.nextDouble();
         scanner.nextLine();
 
         try {
             Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            PreparedStatement statement = conn.prepareStatement("SELECT balance FROM bankUsers WHERE personalId=?");
+            PreparedStatement statement = conn.prepareStatement("SELECT balance FROM bankUsers WHERE personalId=? AND password=?");
             statement.setLong(1, personalId);
+            statement.setString(2, password);
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
@@ -236,11 +228,12 @@ public class UserRegAndLogin {
                 double newBalance = balance + amount;
 
                 if (newBalance < 0) {
-                    System.out.println("Insufficient funds.");
+                    System.out.println("Your account balance will be negative. Can not execute this operation.");
                 } else {
-                    PreparedStatement updateStatement = conn.prepareStatement("UPDATE bankUsers SET balance=? WHERE personalId=?");
+                    PreparedStatement updateStatement = conn.prepareStatement("UPDATE bankUsers SET balance=? WHERE personalId=? AND password=?");
                     updateStatement.setDouble(1, newBalance);
                     updateStatement.setLong(2, personalId);
+                    updateStatement.setString(3, password);
                     int numRowsUpdated = updateStatement.executeUpdate();
                     if (numRowsUpdated > 0) {
                         System.out.println("Balance updated successfully.");
@@ -248,10 +241,9 @@ public class UserRegAndLogin {
                         System.out.println("Failed to update balance.");
                     }
                     System.out.println("Your new balance is: " + newBalance);
-                    System.out.println("Do you want to change your balance ?");
                 }
             } else {
-                System.out.println("Invalid account number.");
+                System.out.println("Invalid personalId or password.");
             }
 
         } catch (SQLException e) {
@@ -266,3 +258,7 @@ public class UserRegAndLogin {
 // (?=.*\d) : Positive lookahead assertion to match any character 0 or more times until it finds a digit [\d].
 // .{8,} : Matches any character (except for line terminators) 8 or more times.
 // $ : Matches the end of the string.
+//\S+: Matches one or more non-whitespace characters
+//\.: Matches the "." symbol (Note: the backslash is used to escape the dot because it has a special meaning in regex)
+//\S+: Matches one or more non-whitespace characters
+// ps. ?=.*[a-z]): ?=.* indicates that not all letter must be lower case, but at least one

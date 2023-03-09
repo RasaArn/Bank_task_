@@ -8,7 +8,7 @@ public class Main {
         UserRegAndLogin userRegAndLogin = new UserRegAndLogin();
 
         System.out.println("-------------------------------------------------------------------------------------");
-        System.out.println("Welcome to the StarBank! Please press 1 if you are employee and 2 if you are customer");
+        System.out.println("Welcome to the CatBank! Please press 1 if you are employee and 2 if you are customer");
 
 
         Scanner scanner = new Scanner(System.in);
@@ -31,18 +31,10 @@ public class Main {
                             throw new InputMismatchException();
                         }
                         switch (employeeChoice) {
-                            case 1 ->
-                                // Replace an existing user with a new one
-                                    System.out.println("Replace user selected.");
-                            case 2 ->
-                                // Remove user
-                                    System.out.println("Remove user selected.");
-                            case 3 ->
-                                // Find user
-                                    System.out.println("Find user selected.");
-                            case 4 ->
-                                // Change personal information for user
-                                    System.out.println("Change user information selected.");
+                            case 1 -> Bank.updatePersonalInfo();
+                            case 2 -> Bank.deleteUser();
+                            case 3 -> Bank.findUser();
+                            case 4 -> Bank.changeUserBalance();
                             default -> System.out.println("Invalid choice. Please try again.");
                         }
                  } catch (InputMismatchException e) {
@@ -68,21 +60,21 @@ public class Main {
                             case 2 -> UserRegAndLogin.registerUser();
                             case 3 -> UserRegAndLogin.changeBalance();
 
-                            default -> System.out.println("Invalid choice. Please try again.");
+                            default -> System.out.println("Invalid choice. Please reconnect and try again.");
                         }
                     } catch (InputMismatchException e) {
-                        System.out.println("Invalid choice entered.Valid input is 1, 2, or 3");
+                        System.out.println("Invalid input. Try again");
                     }
-                }while (customerChoice != 1 && customerChoice != 2);
+                }while (customerChoice != 1 && customerChoice != 2 && customerChoice != 3);
                 scanner.nextLine();
 
 
             } else {
                 throw new InputMismatchException();
-            } break; //Exit the while loop if input is valid
+            } break; //stop while loop if input is valid
 
         } catch (InputMismatchException e) {
-            System.out.println("Invalid choice entered. Please enter 1 or 2.");
+            System.out.println("Invalid input. Please enter 1 or 2.");
             scanner.nextLine();
         }
       }
