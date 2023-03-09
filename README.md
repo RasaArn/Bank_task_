@@ -1,6 +1,7 @@
-# Main task: Write a program for a bank where:
-Users can register,
-User class should have basic information like account number, balance, name, gender etc.
-Bank class should be able to accept a single user at a time, and have methods to credit and debit the user as well as show the user balance.
-Should be a method to replace existing users with new one in the bank.
-All classes should be used from main class
+
+Users can register and log in, update Balance, check balance. Data is saved in SQL database. For each new user is created a unique bankaccount number (ir is used instead of user ID as well)
+User class should have basic information like account number, balance, name etc.
+Bank class: operations performed by bank employee. Employee can search for user, update personal info, change balance, delete user
+UserRegAndLogin class: user registration, login and balance check, login and balance update. 
+Menu Class: contains menu for customers and bank employees.
+Main- to run a program.
