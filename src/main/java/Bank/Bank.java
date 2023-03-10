@@ -15,12 +15,12 @@ class Bank {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "1234";
     private Connection connection;
+    protected Bank(Connection connection) {
+       this.connection = connection;
+   }
+    //}
 
-    public Bank(Connection connection) {
-        this.connection = connection;
-    }
-
-    public static void findUser() {
+    protected static void findUser() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please enter the personal ID of the user you would like to find:");
@@ -56,7 +56,7 @@ class Bank {
             e.printStackTrace();
         }
     }
-    public static void changeUserBalance() {
+    protected static void changeUserBalance() {
     Scanner scanner = new Scanner(System.in);
 
     System.out.println("Please enter customer's account number:");
@@ -101,27 +101,24 @@ class Bank {
     }
 }
 
-    public static void updatePersonalInfo() {
+    protected static void updatePersonalInfo() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please enter personal ID number:");
         long personalId = scanner.nextLong();
         scanner.nextLine();
 
-        try {
-            Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement checkPersonalIdStatement = conn.prepareStatement("SELECT * FROM bankUsers WHERE personalId=?");
+             PreparedStatement updateStatement = conn.prepareStatement("UPDATE bankUsers SET fullName=?, phoneNumber=?, email=? WHERE personalId=?")) {
 
-            // Check if the account number exists in the database
-            PreparedStatement checkPersonalIdStatement = conn.prepareStatement("SELECT * FROM bankUsers WHERE personalId=?");
             checkPersonalIdStatement.setLong(1, personalId);
             ResultSet rs = checkPersonalIdStatement.executeQuery();
 
             if (rs.next()) {
-                // Get the current information for the user
                 String fullName = rs.getString("fullName");
                 String phoneNumber = rs.getString("phoneNumber");
                 String email = rs.getString("email");
-                long accountNumber = rs.getLong("accountNumber");
 
                 System.out.println("Please enter new name or surname (or press Enter to skip):");
                 String newFullName = scanner.nextLine();
@@ -141,12 +138,10 @@ class Bank {
                     newEmail = email;
                 }
 
-                // Update the user's information in the database
-                PreparedStatement updateStatement = conn.prepareStatement("UPDATE bankUsers SET fullName=?, phoneNumber=?, email=? WHERE personalId=?");
                 updateStatement.setString(1, newFullName);
                 updateStatement.setString(2, newPhoneNumber);
                 updateStatement.setString(3, newEmail);
-                updateStatement.setLong(4, accountNumber);
+                updateStatement.setLong(4, personalId); // use personalId instead of accountNumber
                 int numRowsUpdated = updateStatement.executeUpdate();
                 if (numRowsUpdated > 0) {
                     System.out.println("Personal information updated successfully.");
@@ -156,13 +151,13 @@ class Bank {
             } else {
                 System.out.println("Invalid personalId.");
             }
-
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void deleteUser() {
+    protected static void deleteUser() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please enter the account number of the user you would like to delete:");

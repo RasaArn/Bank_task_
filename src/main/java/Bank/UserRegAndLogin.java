@@ -10,7 +10,7 @@ public class UserRegAndLogin {
     private static final String PASSWORD = "1234";
 
 
-    public static void registerUser() {
+    protected static void registerUser() {
         Scanner scanner = new Scanner(System.in);
 
         String fullName = "";
@@ -155,7 +155,7 @@ public class UserRegAndLogin {
     }
 
 
-    public static void loginUser() {
+    protected static void loginUser() {
         Scanner scanner = new Scanner(System.in);
         long personalId;
         String password;
@@ -202,7 +202,7 @@ public class UserRegAndLogin {
         }
     }
 
-    public static void changeBalance() {
+    protected static void changeBalance() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please enter your personal ID number:");
